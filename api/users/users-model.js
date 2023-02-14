@@ -18,6 +18,9 @@ function bul() {
       }
     ]
    */
+  return db("users as u").leftJoin("roles as r", "u.role_id", "r.role_id")
+  .select("u.user_id", "u.username", "r.role_name" )
+  .orderBy("u.user_id", "asc");
 }
 
 function goreBul(filtre) {
@@ -34,6 +37,9 @@ function goreBul(filtre) {
       }
     ]
    */
+  return db("user as u").leftJoin("roles as r", "u.role_id", "r.role_id")
+  .select("u.user_id", "u.username", "u.password", "r.role_name")
+  .where(filtre);
 }
 
 function idyeGoreBul(user_id) {
@@ -47,6 +53,9 @@ function idyeGoreBul(user_id) {
       "role_name": "instructor"
     }
    */
+  return db("user as u").leftJoin("roles as r", "u.role_id", "r.role_id")
+  .select("u.user_id", "u.username", "r.role_name")
+  .where({user_id:user_id}).first(); 
 }
 
 /**
@@ -81,7 +90,7 @@ async function ekle({ username, password, role_name }) { // bu kısım hazır
     const [user_id] = await trx('users').insert({ username, password, role_id: role_id_to_use })
     created_user_id = user_id
   })
-  return findById(created_user_id)
+  return idyeGoreBul(created_user_id)
 }
 
 module.exports = {
