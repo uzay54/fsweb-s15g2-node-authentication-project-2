@@ -4,10 +4,8 @@ const { sinirli, sadece } = require("../auth/auth-middleware.js");
 
 /**
   [GET] /api/users
-
   Bu uç nokta SINIRLIDIR: sadece kimlik kontrolü yapılmış kullanıcılar
   erişebilir.
-
   response:
   status: 200
   [
@@ -17,9 +15,10 @@ const { sinirli, sadece } = require("../auth/auth-middleware.js");
     }
   ]
  */
-router.get("/", sinirli, (req, res, next) => { // hazır
-  Users.find()
-    .then(users => {
+router.get("/", sinirli, (req, res, next) => {
+  // hazır
+  Users.bul()
+    .then((users) => {
       res.json(users);
     })
     .catch(next);
@@ -27,10 +26,8 @@ router.get("/", sinirli, (req, res, next) => { // hazır
 
 /**
   [GET] /api/users/:user_id
-
   Bu uçnokta SINIRLIDIR: sadece kimlik denetimi yapılmış ve rolü 'admin' olan kullanıcılar
   erişebilir.
-
   response:
   status: 200
   [
@@ -40,9 +37,10 @@ router.get("/", sinirli, (req, res, next) => { // hazır
     }
   ]
  */
-router.get("/:user_id", sinirli, sadece('admin'), (req, res, next) => { // hazır
-  Users.findById(req.params.user_id)
-    .then(user => {
+router.get("/:user_id", sinirli, sadece("admin"), (req, res, next) => {
+  // hazır
+  Users.idyeGoreBul(req.params.user_id)
+    .then((user) => {
       res.json(user);
     })
     .catch(next);
